@@ -1,5 +1,5 @@
+from moto import mock_s3,mock_dynamodb
 import pytest
-import moto
 import boto3
 import os
 
@@ -19,11 +19,11 @@ def s3(aws_credentials):
 
 @pytest.fixture
 def create_bucket1(s3):
-    boto3.client("s3").create_bucket(Bucket="b1")
+    boto3.client("s3").create_bucket(Bucket="b-one")
 
 @pytest.fixture
 def create_bucket2(s3):
-    boto3.client("s3").create_bucket(Bucket="b2")
+    boto3.client("s3").create_bucket(Bucket="b-two")
 
 def test_s3_directly(s3):
     s3.create_bucket(Bucket="somebucket")
@@ -33,4 +33,4 @@ def test_s3_directly(s3):
 
 def test_bucket_creation(create_bucket1, create_bucket2):
     buckets = boto3.client("s3").list_buckets()["Buckets"]
-    assert len(result["Buckets"]) == 2
+    assert len(buckets) == 2
